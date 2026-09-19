@@ -2,11 +2,40 @@
 
 import { useState } from "react";
 
-const numbers = Array.from({ length: 100 }, (_, index) => index + 1);
+const positions = Array.from({ length: 100 }, (_, index) => index + 1);
+const ranges = Array.from({ length: 10 }, (_, index) => ({
+  index,
+  start: index * 100 + 1,
+  end: (index + 1) * 100,
+}));
+
+function AnimatedNumber({ value }: { value: number }) {
+  const digits = String(value).split("");
+
+  return (
+    <span className="number-value" aria-hidden="true">
+      {digits.map((digit, index) => {
+        const placeFromRight = digits.length - index - 1;
+
+        return (
+          <span
+            className="number-digit"
+            key={`${placeFromRight}-${digit}`}
+            style={{ gridColumn: 4 - placeFromRight }}
+          >
+            {digit}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
 
 export default function Home() {
   const [isBlank, setIsBlank] = useState(false);
   const [revealed, setRevealed] = useState<Set<number>>(new Set());
+  const [rangeIndex, setRangeIndex] = useState(0);
+  const activeRange = ranges[rangeIndex];
 
   function showAll() {
     setIsBlank(false);
@@ -26,6 +55,10 @@ export default function Home() {
       next.add(number);
       return next;
     });
+  }
+
+  function selectRange(index: number) {
+    setRangeIndex(index);
   }
 
   return (
@@ -61,21 +94,39 @@ export default function Home() {
           </div>
         </header>
 
-        <div className="number-grid" aria-label="Πίνακας αριθμών από το 1 έως το 100">
-          {numbers.map((number) => {
-            const isVisible = !isBlank || revealed.has(number);
+        <nav className="range-nav" aria-label="Επιλογή εκατοντάδας">
+          {ranges.map((range) => (
+            <button
+              type="button"
+              key={range.index}
+              className={rangeIndex === range.index ? "active" : ""}
+              aria-current={rangeIndex === range.index ? "true" : undefined}
+              onClick={() => selectRange(range.index)}
+            >
+              {range.start}–{range.end}
+            </button>
+          ))}
+        </nav>
+
+        <div
+          className="number-grid"
+          aria-label={`Πίνακας αριθμών από το ${activeRange.start} έως το ${activeRange.end}`}
+        >
+          {positions.map((position) => {
+            const number = rangeIndex * 100 + position;
+            const isVisible = !isBlank || revealed.has(position);
 
             return (
               <button
-                key={number}
+                key={position}
                 type="button"
                 className={`number-cell${isVisible ? " visible" : " hidden"}`}
-                onClick={() => revealNumber(number)}
+                onClick={() => revealNumber(position)}
                 aria-label={
                   isVisible ? `Αριθμός ${number}` : `Κρυμμένος αριθμός στη θέση ${number}`
                 }
               >
-                <span aria-hidden={!isVisible}>{isVisible ? number : ""}</span>
+                {isVisible ? <AnimatedNumber value={number} /> : null}
               </button>
             );
           })}
@@ -85,7 +136,7 @@ export default function Home() {
           <span className="footer-dot" aria-hidden="true" />
           {isBlank
             ? `${revealed.size} από τους 100 αριθμούς εμφανίστηκαν`
-            : "Οι αριθμοί από το 1 μέχρι το 100"}
+            : `Οι αριθμοί από το ${activeRange.start} μέχρι το ${activeRange.end}`}
         </footer>
       </section>
     </main>
