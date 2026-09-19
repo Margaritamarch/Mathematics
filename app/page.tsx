@@ -47,12 +47,16 @@ export default function Home() {
     setRevealed(new Set());
   }
 
-  function revealNumber(number: number) {
+  function toggleNumber(number: number) {
     if (!isBlank) return;
 
     setRevealed((current) => {
       const next = new Set(current);
-      next.add(number);
+      if (next.has(number)) {
+        next.delete(number);
+      } else {
+        next.add(number);
+      }
       return next;
     });
   }
@@ -70,7 +74,7 @@ export default function Home() {
             <h1 id="page-title">Πίνακας του 100</h1>
             <p className="instructions">
               Επίλεξε «Κενό» και πάτησε σε ένα τετραγωνάκι για να
-              αποκαλύψεις τον αριθμό.
+              αποκαλύψεις τον αριθμό. Πάτησέ τον ξανά για να τον κρύψεις.
             </p>
           </div>
 
@@ -121,9 +125,13 @@ export default function Home() {
                 key={position}
                 type="button"
                 className={`number-cell${isVisible ? " visible" : " hidden"}`}
-                onClick={() => revealNumber(position)}
+                onClick={() => toggleNumber(position)}
                 aria-label={
-                  isVisible ? `Αριθμός ${number}` : `Κρυμμένος αριθμός στη θέση ${number}`
+                  isBlank && isVisible
+                    ? `Αριθμός ${number}. Πάτησε για απόκρυψη`
+                    : isVisible
+                      ? `Αριθμός ${number}`
+                      : `Κρυμμένος αριθμός στη θέση ${number}. Πάτησε για εμφάνιση`
                 }
               >
                 {isVisible ? <AnimatedNumber value={number} /> : null}
