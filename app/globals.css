@@ -198,7 +198,7 @@ h1 {
 .number-digit {
   grid-row: 1;
   text-align: center;
-  animation: digit-in 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: digit-in 800ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes digit-in {
