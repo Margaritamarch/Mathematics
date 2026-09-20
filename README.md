@@ -14,7 +14,12 @@ Drizzle support.
 npm install
 npm run dev
 npm run build
+npm run start
 ```
+
+The project requires Node.js 22.13 or newer. The npm scripts automatically use
+the compatible Node.js runtime bundled with Codex when the terminal's default
+Node.js version is older.
 
 This starter does not use `wrangler.jsonc`.
 
@@ -89,6 +94,7 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
+- `npm run start`: serve the latest production build locally
 - `npm test`: build the starter and verify its rendered loading skeleton
 - `npm run db:generate`: generate Drizzle migrations after schema changes
 
