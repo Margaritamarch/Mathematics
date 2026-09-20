@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="el">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Διαδραστικοί πίνακες μαθηματικών με τους αριθμούς από το 1 μέχρι το 1000."
+    />
+    <title>Πίνακες αριθμών 1–1000</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./pinakas.bundle.js" defer></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="board-card" aria-labelledby="page-title">
+        <header class="board-header">
+          <div>
+            <p class="eyebrow">Μαθαίνω τους αριθμούς</p>
+            <h1 id="page-title">Πίνακας του 100</h1>
+            <p class="instructions">
+              Επίλεξε «Κενό» και πάτησε σε ένα τετραγωνάκι για να
+              αποκαλύψεις τον αριθμό. Πάτησέ τον ξανά για να τον κρύψεις.
+            </p>
+          </div>
+
+          <div class="view-switch" role="group" aria-label="Προβολή πίνακα">
+            <button id="show-all" type="button" class="active" aria-pressed="true">
+              Αριθμοί
+            </button>
+            <button id="show-blank" type="button" aria-pressed="false">Κενό</button>
+          </div>
+        </header>
+
+        <nav id="range-nav" class="range-nav" aria-label="Επιλογή εκατοντάδας"></nav>
+        <div id="number-grid" class="number-grid"></div>
+
+        <footer class="board-footer">
+          <span class="footer-dot" aria-hidden="true"></span>
+          <span id="board-status" aria-live="polite"></span>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>

@@ -23,6 +23,30 @@ Node.js version is older.
 
 This starter does not use `wrangler.jsonc`.
 
+## Offline version
+
+Generate one self-contained HTML file that works without a server:
+
+```bash
+npm run build:offline
+```
+
+The file is created at `offline-dist/pinakas-1-1000.html`. It contains the
+styles and JavaScript bundle, so it can be copied anywhere and opened directly.
+
+To choose a different output location, add a path after `--`:
+
+```bash
+npm run build:offline -- ~/Desktop/pinakas-1-1000.html
+```
+
+## GitHub Pages
+
+The workflow in `.github/workflows/pages.yml` regenerates the standalone site
+and deploys it after every push to `main`. In the GitHub repository, open
+**Settings → Pages** and set **Source** to **GitHub Actions** once. The workflow
+can also be started manually from the **Actions** tab.
+
 ## Included Shape
 
 - edit site code under `app/`
@@ -94,6 +118,7 @@ actions tied to the current ChatGPT user. Leave public content anonymous.
 
 - `npm run dev`: start local development
 - `npm run build`: verify the vinext build output
+- `npm run build:offline`: create one self-contained offline HTML file
 - `npm run start`: serve the latest production build locally
 - `npm test`: build the starter and verify its rendered loading skeleton
 - `npm run db:generate`: generate Drizzle migrations after schema changes
