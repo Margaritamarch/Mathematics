@@ -17,14 +17,19 @@ const [template, styles, bundle] = await Promise.all([
 const stylesheetTag = '<link rel="stylesheet" href="./styles.css" />';
 const scriptTag = '<script src="./pinakas.bundle.js" defer></script>';
 
-if (!template.includes(stylesheetTag) || !template.includes(scriptTag)) {
-  throw new Error("The offline HTML template is missing its stylesheet or script placeholder.");
+if (
+  !template.includes(stylesheetTag) ||
+  !template.includes(scriptTag) ||
+  !template.includes("</body>")
+) {
+  throw new Error("The offline HTML template is missing a required build placeholder.");
 }
 
 const safeBundle = bundle.replaceAll("</script", "<\\/script");
 const standaloneHtml = template
   .replace(stylesheetTag, `<style>\n${styles}\n</style>`)
-  .replace(scriptTag, `<script>\n${safeBundle}\n</script>`);
+  .replace(scriptTag, "")
+  .replace("</body>", `  <script>\n${safeBundle}\n  </script>\n  </body>`);
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, standaloneHtml, "utf8");
